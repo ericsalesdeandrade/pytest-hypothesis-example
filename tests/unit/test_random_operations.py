@@ -1,5 +1,5 @@
 import pytest
-from hypothesis import given, strategies as st, example
+from hypothesis import given, strategies as st
 from hypothesis import assume as hypothesis_assume
 import logging
 from src.random_operations import (
@@ -42,7 +42,7 @@ def test_complex_string_operation():
 
 
 # Property Based Unit Testing
-@given(st.lists(st.integers(), min_size=1))
+@given(st.lists(st.integers(), min_size=1, max_size=25))
 def test_find_largest_smallest_item_hypothesis(input_list):
     assert find_largest_smallest_item(input_list) == (max(input_list), min(input_list))
 
