@@ -1,5 +1,4 @@
 import pytest
-from hypothesis import given, strategies as st
 from src.shopping_cart import ShoppingCart, Item
 
 
@@ -53,17 +52,4 @@ def test_clear_cart(cart):
     cart.clear_cart()
     assert cart.items == {}
 
-# Property Based Testing
-# @given(st.lists(st.tuples(st.text(min_size=1),
-#                           st.floats(allow_nan=False, allow_infinity=False)),
-#                 min_size=1, max_size=25))
-# def test_add_item_hypothesis(cart, input_list):
-#
-#     # Assert that the number of items in the cart is equal to the number of items added
-#     for item, price in input_list:
-#         cart.add_item(item, price)
-#     assert len(cart.items) == len(input_list)
-#
-#     # Assert that the items added are in the cart and the price is correct
-#     for item, price in input_list:
-#         assert cart.items[item] == price
+
