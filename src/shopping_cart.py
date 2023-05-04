@@ -27,26 +27,37 @@ class ShoppingCart:
         """
         self.items = {}
 
-    def add_item(self, item: Item, price: int | float) -> None:
+    def add_item(self, item: Item, price: int | float, quantity: int = 1) -> None:
         """
         Adds an item to the shopping cart
+        :param quantity: Quantity of the item
         :param item: Item to add
         :param price: Price of the item
         :return: None
         """
-        if item in self.items:
-            self.items[item.name] += price
+        if item.name in self.items:
+            self.items[item.name]["quantity"] += quantity
         else:
-            self.items[item.name] = price
+            self.items[item.name] = {"price": price, "quantity": quantity}
 
-    def remove_item(self, item: Item) -> None:
+    def remove_item(self, item: Item, quantity: int = 1) -> None:
         """
         Removes an item from the shopping cart
+        :param quantity: Quantity of the item
         :param item: Item to remove
         :return: None
         """
         if item.name in self.items:
-            del self.items[item.name]
+            if self.items[item.name]["quantity"] <= quantity:
+                del self.items[item.name]
+            else:
+                self.items[item.name]["quantity"] -= quantity
+
+    def get_total_price(self):
+        total = 0
+        for item in self.items.values():
+            total += item["price"] * item["quantity"]
+        return total
 
     def view_cart(self) -> None:
         """
@@ -57,13 +68,6 @@ class ShoppingCart:
         for item, price in self.items.items():
             print("- {}: ${}".format(item, price))
 
-    def total(self) -> float:
-        """
-        Calculates the total price of the items in the shopping cart
-        :return: Total price
-        """
-        return sum(self.items.values())
-
     def clear_cart(self) -> None:
         """
         Clears the shopping cart
@@ -71,19 +75,8 @@ class ShoppingCart:
         """
         self.items = {}
 
-    def checkout(self) -> None:
-        """
-        Checks out the shopping cart
-        :return: None
-        """
-        print("Checking out...")
-        print("Your total is: ${}".format(self.total()))
-        print("Thank you for shopping with us!")
-        self.clear_cart()
-
 
 if __name__ == "__main__":
-
     # Initialise Cart
     cart = ShoppingCart()
 
@@ -99,6 +92,17 @@ if __name__ == "__main__":
     cart.add_item(item=apple, price=3)
     cart.add_item(item=coffee, price=4)
 
+    # Get Total Price
+    total = cart.get_total_price()
+    print(f"Total: ${total}")
+
+    # Remove Items from Cart
+    cart.remove_item(item=banana)
+    cart.remove_item(item=orange)
+
+    # Get Total Price
+    total = cart.get_total_price()
+    print(f"Total: ${total}")
+
     # View Cart
     cart.view_cart()
-    cart.checkout()
