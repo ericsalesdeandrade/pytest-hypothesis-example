@@ -40,14 +40,16 @@ def test_total(cart):
     cart.add_item(orange, 1.00)
     cart.add_item(apple, 2.00)
     cart.add_item(soda, 2.00)
+    cart.add_item(soda, 2.00)
     cart.add_item(water, 1.00)
     cart.remove_item(apple)
-    assert cart.get_total_price() == 4.00
-#
-#
-# def test_clear_cart(cart):
-#     cart.add_item(apple, 1.00)
-#     cart.add_item(soda, 2.00)
-#     cart.add_item(water, 1.00)
-#     cart.clear_cart()
-#     assert cart.items == {}
+    cart.add_item(gum, 2.50)
+    assert cart.get_total_price() == 8.50
+
+
+def test_clear_cart(cart):
+    cart.add_item(apple, 1.00)
+    cart.add_item(soda, 2.00)
+    cart.add_item(water, 1.00)
+    cart.clear_cart()
+    assert cart.items == {}
