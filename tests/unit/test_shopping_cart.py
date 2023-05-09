@@ -23,8 +23,12 @@ def test_add_item(cart):
     cart.add_item(orange, 1.00)
     cart.add_item(gum, 2.00)
     cart.add_item(soda, 2.50)
-    assert cart.items == {'APPLE': {'price': 1.0, 'quantity': 1}, 'ORANGE': {'price': 1.0, 'quantity': 1},
-                          'GUM': {'price': 2.0, 'quantity': 1}, 'SODA': {'price': 2.5, 'quantity': 1}}
+    assert cart.items == {
+        "APPLE": {"price": 1.0, "quantity": 1},
+        "ORANGE": {"price": 1.0, "quantity": 1},
+        "GUM": {"price": 2.0, "quantity": 1},
+        "SODA": {"price": 2.5, "quantity": 1},
+    }
     #
 
 
@@ -33,7 +37,10 @@ def test_remove_item(cart):
     cart.add_item(tea, 3.00)
     cart.add_item(coffee, 3.00)
     cart.remove_item(orange)
-    assert cart.items == {'TEA': {'price': 3.0, 'quantity': 1}, 'COFFEE': {'price': 3.0, 'quantity': 1}}
+    assert cart.items == {
+        "TEA": {"price": 3.0, "quantity": 1},
+        "COFFEE": {"price": 3.0, "quantity": 1},
+    }
 
 
 def test_total(cart):

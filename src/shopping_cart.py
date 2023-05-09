@@ -76,33 +76,40 @@ class ShoppingCart:
         self.items = {}
 
 
-# if __name__ == "__main__":
-#     # Initialise Cart
-#     cart = ShoppingCart()
-#
-#     # Define Items
-#     banana = Item.BANANA
-#     orange = Item.ORANGE
-#     apple = Item.APPLE
-#     coffee = Item.COFFEE
-#
-#     # Add Items to Cart
-#     cart.add_item(item=banana, price=2)
-#     cart.add_item(item=orange, price=5)
-#     cart.add_item(item=apple, price=3)
-#     cart.add_item(item=coffee, price=4)
-#
-#     # Get Total Price
-#     total = cart.get_total_price()
-#     print(f"Total: ${total}")
-#
-#     # Remove Items from Cart
-#     cart.remove_item(item=banana)
-#     cart.remove_item(item=orange)
-#
-#     # Get Total Price
-#     total = cart.get_total_price()
-#     print(f"Total: ${total}")
-#
-#     # View Cart
-#     cart.view_cart()
+if __name__ == "__main__":
+    # Initialise Cart
+    cart = ShoppingCart()
+
+    # Define Items
+    banana = Item.BANANA
+    orange = Item.ORANGE
+    apple = Item.APPLE
+    coffee = Item.COFFEE
+
+    cart.add_item(banana, 2.00)
+    cart.add_item(banana, 2.00)
+
+    total = cart.get_total_price()
+    print(f"View Items in Cart:{cart.items}")
+    print(f"Total: ${total}")
+
+    # # Add Items to Cart
+    # cart.add_item(item=banana, price=2)
+    # cart.add_item(item=orange, price=5)
+    # cart.add_item(item=apple, price=3)
+    # cart.add_item(item=coffee, price=4)
+    #
+    # # Get Total Price
+    # total = cart.get_total_price()
+    # print(f"Total: ${total}")
+    #
+    # # Remove Items from Cart
+    # cart.remove_item(item=banana)
+    # cart.remove_item(item=orange)
+    #
+    # # Get Total Price
+    # total = cart.get_total_price()
+    # print(f"Total: ${total}")
+    #
+    # # View Cart
+    # cart.view_cart()

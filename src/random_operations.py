@@ -1,5 +1,6 @@
 # Array Operations
 
+
 def find_largest_smallest_item(input_array: list) -> tuple:
     """
     Function to find the largest and smallest items in an array
@@ -43,6 +44,7 @@ def sort_array(input_array: list, sort_key: str) -> list:
 
 
 # String Operations
+
 
 def reverse_string(input_string) -> str:
     """

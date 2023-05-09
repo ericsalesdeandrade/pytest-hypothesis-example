@@ -6,7 +6,7 @@ from src.random_operations import (
     reverse_string,
     find_largest_smallest_item,
     complex_string_operation,
-    sort_array
+    sort_array,
 )
 
 logging.basicConfig(level=logging.INFO)
@@ -47,19 +47,20 @@ def test_find_largest_smallest_item_hypothesis(input_list):
     assert find_largest_smallest_item(input_list) == (max(input_list), min(input_list))
 
 
-@given(st.lists(
-    st.fixed_dictionaries({
-        "name": st.text(),
-        "age": st.integers()}
-    ),
-    ))
+@given(
+    st.lists(
+        st.fixed_dictionaries({"name": st.text(), "age": st.integers()}),
+    )
+)
 def test_sort_array_hypothesis(input_list):
     if len(input_list) == 0:
         with pytest.raises(ValueError):
             sort_array(input_list, "age")
 
     hypothesis_assume(len(input_list) > 0)
-    assert sort_array(input_list, "age") == sorted(input_list, key=lambda x: x["age"], reverse=True)
+    assert sort_array(input_list, "age") == sorted(
+        input_list, key=lambda x: x["age"], reverse=True
+    )
 
 
 @given(st.text())
@@ -69,5 +70,10 @@ def test_reverse_string_hypothesis(input_string):
 
 @given(st.text())
 def test_complex_string_operation_hypothesis(input_string):
-    assert complex_string_operation(input_string) == input_string.strip().replace(" ", "") \
-        .upper().replace("A", "").replace("E", "").replace("I", "").replace("O", "").replace("U", "")
+    assert complex_string_operation(input_string) == input_string.strip().replace(
+        " ", ""
+    ).upper().replace("A", "").replace("E", "").replace("I", "").replace(
+        "O", ""
+    ).replace(
+        "U", ""
+    )

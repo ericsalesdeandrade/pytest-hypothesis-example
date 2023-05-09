@@ -1,69 +1,70 @@
 from typing import Callable
-import pytest
 from hypothesis import given, strategies as st
+from hypothesis.strategies import SearchStrategy
 from src.shopping_cart import ShoppingCart, Item
 
 
+# Create a strategy for items
 @st.composite
-def items_strategy(draw):
+def items_strategy(draw: Callable[[SearchStrategy[Item]], Item]):
     return draw(st.sampled_from(list(Item)))
 
 
+# Create a strategy for price
 @st.composite
-def price_strategy(draw):
+def price_strategy(draw: Callable[[SearchStrategy[float]], float]):
     return round(draw(st.floats(min_value=0.01, max_value=100, allow_nan=False)), 2)
 
 
-input_strategy = st.lists(st.tuples(items_strategy(),
-                                    st.integers(min_value=1, max_value=10),
-                                    price_strategy()),
-                          min_size=1, max_size=2)
+# Create a strategy for quantity
+@st.composite
+def qty_strategy(draw: Callable[[SearchStrategy[int]], int]):
+    return draw(st.integers(min_value=1, max_value=10))
 
 
-# Property Based Testing
-@given(input_strategy)
-def test_add_item_hypothesis(input_list):
-    cart = ShoppingCart()
-
-    # Assert that the quantity of items in the cart is equal to the number of items added
-    for item, qty, price in input_list:
-        cart.add_item(item=item, quantity=qty, price=price)
-        assert item.name in cart.items
-
-    assert sum(item['quantity'] for item in cart.items.values()) == sum(item[1] for item in input_list)
-
-
-# @given(st.lists(st.tuples(items_strategy(),
-#                           st.integers(min_value=1, max_value=10),
-#                           price_strategy()),
-#                 min_size=1, max_size=2))
-# def test_remove_item_hypothesis(input_list):
-#     cart = ShoppingCart()
-#
-#     # Add items to cart
-#     for item, qty, price in input_list:
-#         cart.add_item(item=item, quantity=qty, price=price)
-#         assert item.name in cart.items
-#
-#     # Remove items from cart
-#     for item, qty, price in input_list:
-#         cart.remove_item(item=item)
-#         print(cart.items)
-# assert item.name not in cart.items
-
-@given(input_strategy)
-def test_calculate_total_hypothesis(input_list):
+@given(items_strategy(), price_strategy(), qty_strategy())
+def test_add_item_hypothesis(item, price, quantity):
     cart = ShoppingCart()
 
     # Add items to cart
-    for item, qty, price in input_list:
-        cart.add_item(item=item, quantity=qty, price=price)
+    cart.add_item(item=item, price=price, quantity=quantity)
+
+    # Assert that the quantity of items in the cart is equal to the number of items added
+    assert item.name in cart.items
+    assert cart.items[item.name]["quantity"] == quantity
+
+
+@given(items_strategy(), price_strategy(), qty_strategy())
+def test_remove_item_hypothesis(item, price, quantity):
+    cart = ShoppingCart()
+
+    print("Adding Items")
+    # Add items to cart
+    cart.add_item(item=item, price=price, quantity=quantity)
+    cart.add_item(item=item, price=price, quantity=quantity)
+    print(cart.items)
+
+    # Remove item from cart
+    print(f"Removing Item {item}")
+    quantity_before = cart.items[item.name]["quantity"]
+    cart.remove_item(item=item)
+    quantity_after = cart.items[item.name]["quantity"]
+
+    # Assert that if we remove an item, the quantity of items in the cart is equal to the number of items added - 1
+    assert quantity_before == quantity_after + 1
+
+
+@given(items_strategy(), price_strategy(), qty_strategy())
+def test_calculate_total_hypothesis(item, price, quantity):
+    cart = ShoppingCart()
+
+    # Add items to cart
+    cart.add_item(item=item, price=price, quantity=quantity)
+    cart.add_item(item=item, price=price, quantity=quantity)
+
+    # Remove item from cart
+    cart.remove_item(item=item)
 
     # Calculate total
     total = cart.get_total_price()
-
-    # Assert that the total is equal to the sum of the price of each item multiplied by the quantity of each item
-    print(input_list)
-    print(total)
-    print(sum(item[1] * item[2] for item in input_list))
-    assert total == sum(item[1] * item[2] for item in input_list)
+    assert total == cart.items[item.name]["price"] * cart.items[item.name]["quantity"]
