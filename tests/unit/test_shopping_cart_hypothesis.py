@@ -38,14 +38,11 @@ def test_add_item_hypothesis(item, price, quantity):
 def test_remove_item_hypothesis(item, price, quantity):
     cart = ShoppingCart()
 
-    print("Adding Items")
     # Add items to cart
     cart.add_item(item=item, price=price, quantity=quantity)
     cart.add_item(item=item, price=price, quantity=quantity)
-    print(cart.items)
 
     # Remove item from cart
-    print(f"Removing Item {item}")
     quantity_before = cart.items[item.name]["quantity"]
     cart.remove_item(item=item)
     quantity_after = cart.items[item.name]["quantity"]
